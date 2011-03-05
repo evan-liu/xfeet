@@ -7,16 +7,22 @@ package xfeet.runners
     import flash.events.TimerEvent;
     import flash.system.System;
     import flash.utils.getTimer;
-    public class MethodRunner
+    public class MethodRunner extends AbstractRunner
     {
+        //======================================================================
+        //  Constructor
+        //======================================================================
+        public function MethodRunner(unit:*, methodData:MethodData)
+        {
+            this.unit = unit;
+            this.methodData = methodData;
+            targetData = methodData;
+        }
         //======================================================================
         //  Variables
         //======================================================================
         private var unit:*;
         private var methodData:MethodData;
-        private var runData:RunData;
-        private var completeHandler:Function;
-        private var resultXML:XML;
         //
         private var method:Function;
         private var iterations:uint;
@@ -33,85 +39,68 @@ package xfeet.runners
         //======================================================================
         //  Public methods
         //======================================================================
-        public function run(unit:*, methodData:MethodData, runData:RunData,
+        override public function run(runData:RunData,
                             resultRoot:XML, completeHandler:Function):void
         {
-            this.unit = unit;
-            this.methodData = methodData;
-            this.runData = runData;
-            this.completeHandler = completeHandler;
-            iterations = methodData.iterations > 0 ? methodData.iterations :
-                                                     runData.iterations;
-            loops = runData.loops;
-            method = unit[methodData.name];
-            //
-            resultXML = <Method name={methodData.name} />;
-            resultRoot.appendChild(resultXML);
-            printStart();
-            //
+            super.run(runData, resultRoot, completeHandler);
             runData.timer.addEventListener(TimerEvent.TIMER, timerHandler);
             checkIteration();
         }
         //======================================================================
-        //  Private methods
+        //  Overridden methods
         //======================================================================
-        private function printStart():void
+        override protected function prepareStart(resultRoot:XML):void
         {
-            runData.output.printText("    [ " + methodData.name);
-            if (methodData.description)
-            {
-                runData.output.printText(" . " + methodData.description, false);
-                resultXML.@description = methodData.description;
-            }
-            if (methodData.iterations > 0)
-            {
-                runData.output.printText(" . " + methodData.iterations + " iterations", false);
-                resultXML.@iterations= methodData.iterations;
-            }
+            resultXML = <Method name={targetData.name} />;
+            resultRoot.appendChild(resultXML);
+            iterations = methodData.iterations > 0 ? methodData.iterations :
+                                                     runData.iterations;
+            loops = runData.loops;
+            method = unit[methodData.name];
+        }
+        override protected function printStart():void
+        {
+            printStartOpen("    [ ");
+            printTargetAttribute("iterations");
             runData.output.printText(" ]", false);
         }
+        //======================================================================
+        //  Private methods
+        //======================================================================
         private function printComplete():void
         {
             time /= iterations;
-            runData.output.printText("    [ ===== ");
-            runData.output.printText(" . " + time.toFixed(1), false);
+            runData.output.printText("    [ ===== " + time.toFixed(1));
             resultXML.@time = time.toFixed(1);
             if (iterations > 1)
             {
-                runData.output.printText(" . min=" + min, false);
-                runData.output.printText(" . max=" + max, false);
-                resultXML.@min = min;
-                resultXML.@max = max;
+                printValue(min, "min");
+                printValue(max, "max");
                 if (time > 0)
                 {
                     var deviation:Number = (max - min) / time;
-                    runData.output.printText(" . deviation=" + deviation.toFixed(3), false);
-                    resultXML.@deviation = deviation.toFixed(3);
+                    printValue(deviation.toFixed(3), "deviation");
                 }
             }
             if (memory > iterations)
             {
                 memory /= iterations;
                 retainedMemory /= iterations;
-                runData.output.printText(" . memory=" + memory, false);
-                runData.output.printText(" . retainedMemory=" + retainedMemory, false);
-                resultXML.@memory = memory;
-                resultXML.@retainedMemory = retainedMemory;
+                printValue(memory, "memory");
+                printValue(retainedMemory, "retainedMemory");
             }
-            runData.output.printText(" ]", false);
+            printCloseTag();
         }
-        private function printInteration(t:uint, memory:int, retainedMemory:int):void
+        private function printIteration(t:uint, memory:int, retainedMemory:int):void
         {
-            runData.output.printText("      [  " + t);
+            runData.output.printText("      [ " + t);
             var xml:XML = <Interation time={t} />;
             if (memory > 1)
             {
-                runData.output.printText(" . memory=" + memory, false);
-                runData.output.printText(" . retainedMemory=" + retainedMemory, false);
-                xml.@memory = memory;
-                xml.@retainedMemory = retainedMemory;
+                printValue(memory, "memory", xml);
+                printValue(retainedMemory, "retainedMemory", xml);
             }
-            runData.output.printText(" ]", false);
+            printCloseTag();
             resultXML.appendChild(xml);
         }
         private function checkIteration():void
@@ -153,7 +142,7 @@ package xfeet.runners
             retainedMemory += thisRetainedMemory;
             if (runData.iterations > 1 && runData.printIteration)
             {
-                printInteration(t, thisMemory, thisRetainedMemory);
+                printIteration(t, thisMemory, thisRetainedMemory);
             }
             times++;
             runData.timer.reset();

@@ -3,33 +3,41 @@ package xfeet.runners
     import xfeet.data.RunData;
     import xfeet.data.SuiteData;
     import xfeet.data.UnitData;
-    public class SuiteRunner
+    public class SuiteRunner extends AbstractRunner
     {
+        //======================================================================
+        //  Constructor
+        //======================================================================
+        public function SuiteRunner(suiteData:SuiteData)
+        {
+            this.suiteData = suiteData;
+            targetData = suiteData;
+        }
         //======================================================================
         //  Variables
         //======================================================================
         private var suiteData:SuiteData;
-        private var runData:RunData;
-        private var completeHandler:Function;
-        //
-        private var resultXML:XML;
-        //
         private var elements:Array;
         //======================================================================
-        //  Public methods
+        //  Overridden methods
         //======================================================================
-        public function run(suiteData:SuiteData, runData:RunData,
+        override public function run(runData:RunData,
                             resultRoot:XML, completeHandler:Function):void
         {
-            this.suiteData = suiteData;
-            this.runData = runData;
-            this.completeHandler = completeHandler;
-            resultXML = <Suite name={suiteData.name}/>;
-            resultRoot.appendChild(resultXML);
-            printStart();
+            super.run(runData, resultRoot, completeHandler);
             //
             elements = suiteData.elements;
             checkNext();
+        }
+        override protected function prepareStart(resultRoot:XML):void
+        {
+            resultXML = <Suite name={targetData.name} />;
+            resultRoot.appendChild(resultXML);
+        }
+        override protected function printStart():void
+        {
+            printStartOpen("\n[ ");
+            printCloseTag();
         }
         //======================================================================
         //  Private methods
@@ -43,22 +51,12 @@ package xfeet.runners
             }
             if (elements[0] is UnitData)
             {
-                new UnitRunner().run(elements.shift(), runData, resultXML, onComplete);
+                new UnitRunner(elements.shift()).run(runData, resultXML, onComplete);
             }
             else
             {
-                new SuiteRunner().run(elements.shift(), runData, resultXML, onComplete);
+                new SuiteRunner(elements.shift()).run(runData, resultXML, onComplete);
             }
-        }
-        private function printStart():void
-        {
-            runData.output.printText("\n[ " + suiteData.name);
-            if (suiteData.description)
-            {
-                runData.output.printText(" . " + suiteData.description, false);
-                resultXML.@description = suiteData.description;
-            }
-            runData.output.printText(" ]", false);
         }
         private function onComplete():void
         {

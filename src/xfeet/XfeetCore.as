@@ -44,11 +44,11 @@ package xfeet
             var reflection:Reflection = Reflection.create(unitOrSuite);
             if (isUnit(reflection))
             {
-                new UnitRunner().run(new UnitData(unitOrSuite), runData, result, onComplete);
+                new UnitRunner(new UnitData(unitOrSuite)).run(runData, result, onComplete);
             }
             else
             {
-                new SuiteRunner().run(new SuiteData(unitOrSuite), runData, result, onComplete);
+                new SuiteRunner(new SuiteData(unitOrSuite)).run(runData, result, onComplete);
             }
         }
         //======================================================================

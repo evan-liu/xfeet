@@ -5,14 +5,21 @@ package xfeet.runners
 
     import flash.events.TimerEvent;
     import flash.utils.getTimer;
-    public class TareRunner
+    public class TareRunner extends AbstractRunner
     {
+        //======================================================================
+        //  Constructor
+        //======================================================================
+        public function TareRunner(unit:*, methodData:MethodData)
+        {
+            this.unit = unit;
+            this.methodData = methodData;
+        }
         //======================================================================
         //  Variables
         //======================================================================
         private var unit:*;
-        private var runData:RunData;
-        private var completeHandler:Function;
+        private var methodData:MethodData;
         //
         private var method:Function;
         private var iterations:uint;
@@ -21,14 +28,13 @@ package xfeet.runners
         private var times:uint = 0;
         private var total:int = 0;
         //======================================================================
-        //  Public methods
+        //  Overridden methods
         //======================================================================
-        public function run(unit:*, methodData:MethodData, runData:RunData,
-                            completeHandler:Function):void
+        override public function run(runData:RunData, resultRoot:XML,
+                                     completeHandler:Function):void
         {
-            this.unit = unit;
-            this.runData = runData;
-            this.completeHandler = completeHandler;
+            super.run(runData, resultRoot, completeHandler);
+            //
             iterations = methodData && methodData.iterations > 0 ? methodData.iterations :
                                                                    runData.iterations;
             loops = runData.loops;
