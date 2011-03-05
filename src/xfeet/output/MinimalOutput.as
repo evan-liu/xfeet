@@ -45,8 +45,8 @@ package xfeet.output
         }
         public function printComplete(result:XML):void
         {
-            //appendText("\n\n";
-            //appendText(result.toXMLString();
+            appendText("\n\n");
+            appendText(result.toXMLString());
             appendText("\n\nTest complete.");
         }
         //======================================================================

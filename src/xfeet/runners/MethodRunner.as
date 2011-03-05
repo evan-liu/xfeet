@@ -72,12 +72,22 @@ package xfeet.runners
         {
             var time:Number = total / iterations;
             runData.output.printText("    [ " + methodData.name);
-            runData.output.printText(" . " + time.toFixed(1) + " ms", false);
+            runData.output.printText(" . " + time.toFixed(1), false);
+            if (iterations > 1)
+            {
+                runData.output.printText(" . min=" + min, false);
+                runData.output.printText(" . max=" + max, false);
+                if (time > 0)
+                {
+                    var deviation:Number = (max - min) / time;
+                    runData.output.printText(" . deviation=" + deviation.toFixed(3), false);
+                }
+            }
             runData.output.printText(" ]", false);
         }
         private function printInteration(t:uint):void
         {
-            runData.output.printText("      [  " + t + " ms ]");
+            runData.output.printText("      [  " + t + " ]");
         }
         private function checkIteration():void
         {
