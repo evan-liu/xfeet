@@ -49,6 +49,14 @@ package xfeet.runners
             {
                 runData.output.printText(" . " + unitData.description, false);
             }
+            if (unitData.loops > 0)
+            {
+                runData.output.printText(" . " + unitData.loops + " loops", false);
+            }
+            if (unitData.iterations > 0)
+            {
+                runData.output.printText(" . " + unitData.iterations + " iterations", false);
+            }
             runData.output.printText(" ]", false);
 
         }

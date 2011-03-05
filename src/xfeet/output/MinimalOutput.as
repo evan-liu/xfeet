@@ -32,22 +32,22 @@ package xfeet.output
         //======================================================================
         public function printStart():void
         {
-            text.text += "Running tests on " + Capabilities.version;
-            text.text += " " + (Capabilities.isDebugger ? "DEBUG" : "RELEASE");
+            appendText("Running tests on " + Capabilities.version);
+            appendText(" " + (Capabilities.isDebugger ? "DEBUG" : "RELEASE"));
         }
         public function printText(value:String, nextLine:Boolean = true):void
         {
             if (nextLine)
             {
-                text.text += "\n";
+                appendText("\n");
             }
-            text.text += value;
+            appendText(value);
         }
         public function printComplete(result:XML):void
         {
-            text.text += "\n\n";
-            text.text += result.toXMLString();
-            text.text += "\n\nTest complete.";
+            //appendText("\n\n";
+            //appendText(result.toXMLString();
+            appendText("\n\nTest complete.");
         }
         //======================================================================
         //  Private methods
@@ -58,6 +58,12 @@ package xfeet.output
             text.width = stage.stageWidth;
             text.height = stage.stageHeight;
             text.editable = false;
+        }
+        private function appendText(value:String):void
+        {
+            text.text += value;
+            text.textField.appendText(value);
+            text.textField.scrollV = text.textField.maxScrollV;
         }
         //======================================================================
         //  Event handlers

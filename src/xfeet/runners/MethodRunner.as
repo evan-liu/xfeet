@@ -54,10 +54,17 @@ package xfeet.runners
         private function printStart():void
         {
             runData.output.printText("\n    [ " + methodData.name);
-            runData.output.printText(" . " + loops + " loops", false);
             if (methodData.description)
             {
                 runData.output.printText(" . " + methodData.description, false);
+            }
+            if (methodData.loops > 0)
+            {
+                runData.output.printText(" . " + methodData.loops + " loops", false);
+            }
+            if (methodData.iterations > 0)
+            {
+                runData.output.printText(" . " + methodData.iterations + " iterations", false);
             }
             runData.output.printText(" ]", false);
         }
@@ -65,7 +72,7 @@ package xfeet.runners
         {
             var time:Number = total / iterations;
             runData.output.printText("    [ " + methodData.name);
-            runData.output.printText(" . " + time.toFixed(1), false);
+            runData.output.printText(" . " + time.toFixed(1) + " ms", false);
             runData.output.printText(" ]", false);
         }
         private function printInteration(t:uint):void

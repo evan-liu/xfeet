@@ -1,4 +1,4 @@
-﻿package tests{    [Unit(label="Comparing floor & round to bitwise equivalents.")]    public class BitwiseOrMath    {        //======================================================================
+﻿package tests{    [Unit(label="Comparing floor & round to bitwise equivalents")]    public class Bitwise    {        //======================================================================
         //  Variables
         //======================================================================        private var foo:Array;        private var i:uint;        //======================================================================
         //  Public methods

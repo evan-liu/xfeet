@@ -27,12 +27,12 @@ package xfeet
                                   delay:int = 1)
         {
             super();
-            data = new RunData(output, loops, iterations, printIteration, delay);
+            runData = new RunData(output, loops, iterations, printIteration, delay);
         }
         //======================================================================
         //  Variables
         //======================================================================
-        private var data:RunData;
+        private var runData:RunData;
         private var result:XML;
         //======================================================================
         //  Public methods
@@ -40,15 +40,15 @@ package xfeet
         public function run(unitOrSuite:Class):void
         {
             result = <TestCollection />;
-            data.output.printStart();
+            runData.output.printStart();
             var reflection:Reflection = Reflection.create(unitOrSuite);
             if (isUnit(reflection))
             {
-                new UnitRunner().run(new UnitData(unitOrSuite), data, result, onComplete);
+                new UnitRunner().run(new UnitData(unitOrSuite), runData, result, onComplete);
             }
             else
             {
-                new SuiteRunner().run(new SuiteData(unitOrSuite), data, result, onComplete);
+                new SuiteRunner().run(new SuiteData(unitOrSuite), runData, result, onComplete);
             }
         }
         //======================================================================
@@ -56,7 +56,7 @@ package xfeet
         //======================================================================
         private function onComplete():void
         {
-            data.output.printComplete(result);
+            runData.output.printComplete(result);
         }
     }
 }

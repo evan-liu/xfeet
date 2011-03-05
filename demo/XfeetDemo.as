@@ -1,7 +1,5 @@
 package
 {
-    import tests.BitwiseOrMath;
-
     import xfeet.XfeetCore;
     import xfeet.output.MinimalOutput;
 
@@ -10,7 +8,7 @@ package
         public function XfeetDemo()
         {
             super();
-            new XfeetCore(this).run(BitwiseOrMath);
+            new XfeetCore(this).run(AllTests);
         }
     }
 }
