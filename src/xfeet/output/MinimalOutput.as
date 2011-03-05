@@ -57,6 +57,7 @@ package xfeet.output
             text = new TextArea(this, 0, 0);
             text.width = stage.stageWidth;
             text.height = stage.stageHeight;
+            text.editable = false;
         }
         //======================================================================
         //  Event handlers

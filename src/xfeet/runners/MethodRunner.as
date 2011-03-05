@@ -18,6 +18,7 @@ package xfeet.runners
         private var completeHandler:Function;
         private var resultXML:XML;
         //
+        private var method:Function;
         private var iterations:uint;
         private var loops:uint;
         private var timer:Timer = new Timer(1, 1);
@@ -34,6 +35,7 @@ package xfeet.runners
             iterations = methodData.iterations > 0 ? methodData.iterations :
                                                      runData.iterations;
             loops = methodData.loops > 0 ? methodData.loops : runData.loops;
+            method = unit[methodData.name];
             //
             resultXML = <Method name={methodData.name} />;
             resultRoot.appendChild(resultXML);
@@ -82,7 +84,7 @@ package xfeet.runners
             var t:uint = getTimer();
             for (var i:int = 0; i < loops; i++)
             {
-                unit[methodData.name]();
+                method();
             }
             t = getTimer() - t;
             if (runData.iterations > 1 && runData.printIteration)
