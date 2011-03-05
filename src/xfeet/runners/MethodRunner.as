@@ -77,14 +77,18 @@ package xfeet.runners
             time /= iterations;
             runData.output.printText("    [ " + methodData.name);
             runData.output.printText(" . " + time.toFixed(1), false);
+            resultXML.@time = time.toFixed(1);
             if (iterations > 1)
             {
                 runData.output.printText(" . min=" + min, false);
                 runData.output.printText(" . max=" + max, false);
+                resultXML.@min = min;
+                resultXML.@max = max;
                 if (time > 0)
                 {
                     var deviation:Number = (max - min) / time;
                     runData.output.printText(" . deviation=" + deviation.toFixed(3), false);
+                    resultXML.@deviation = deviation.toFixed(3);
                 }
             }
             if (memory > iterations)
@@ -93,18 +97,24 @@ package xfeet.runners
                 retainedMemory /= iterations;
                 runData.output.printText(" . memory=" + memory, false);
                 runData.output.printText(" . retainedMemory=" + retainedMemory, false);
+                resultXML.@memory = memory;
+                resultXML.@retainedMemory = retainedMemory;
             }
             runData.output.printText(" ]", false);
         }
         private function printInteration(t:uint, memory:int, retainedMemory:int):void
         {
             runData.output.printText("      [  " + t);
+            var xml:XML = <Interation time={t} />;
             if (memory > 1)
             {
                 runData.output.printText(" . memory=" + memory, false);
                 runData.output.printText(" . retainedMemory=" + retainedMemory, false);
+                xml.@memory = memory;
+                xml.@retainedMemory = retainedMemory;
             }
             runData.output.printText(" ]", false);
+            resultXML.appendChild(xml);
         }
         private function checkIteration():void
         {

@@ -56,6 +56,9 @@ package xfeet
         //======================================================================
         private function onComplete():void
         {
+            result = result.children()[0];
+            result.setLocalName("TestCollection");
+            delete result.@name;
             runData.output.printComplete(result);
         }
     }
