@@ -1,9 +1,11 @@
 package xfeet.output
 {
+    import com.bit101.components.RadioButton;
     import com.bit101.components.TextArea;
 
     import flash.display.Sprite;
     import flash.events.Event;
+    import flash.events.MouseEvent;
     import flash.system.Capabilities;
 
     public class MinimalOutput extends Sprite implements IXfeetOutput
@@ -26,7 +28,12 @@ package xfeet.output
         //======================================================================
         //  Variables
         //======================================================================
-        private var text:TextArea;
+        private var console:TextArea;
+        private var textButton:RadioButton;
+        private var xmlButton:RadioButton;
+        //
+        private var text:String = "";
+        private var xml:String = "";
         //======================================================================
         //  Public methods
         //======================================================================
@@ -45,8 +52,9 @@ package xfeet.output
         }
         public function printComplete(result:XML):void
         {
-            appendText("\n\n");
-            appendText(result.toXMLString());
+            xml = result.toXMLString();
+            xmlButton.enabled = true;
+            //
             appendText("\n\nTest complete.");
         }
         //======================================================================
@@ -54,16 +62,27 @@ package xfeet.output
         //======================================================================
         private function build():void
         {
-            text = new TextArea(this, 0, 0);
-            text.width = stage.stageWidth;
-            text.height = stage.stageHeight;
-            text.editable = false;
+            textButton = new RadioButton(this, 10, 10, "Text", true, textHandler);
+            xmlButton = new RadioButton(this, 60, 10, "XML", false, xmlHandler);
+            xmlButton.enabled = false;
+            console = new TextArea(this, 0, 30);
+            console.width = stage.stageWidth;
+            console.editable = false;
+            console.height = stage.stageHeight - console.y;
         }
         private function appendText(value:String):void
         {
-            text.text += value;
-            text.textField.appendText(value);
-            text.textField.scrollV = text.textField.maxScrollV;
+            text += value;
+            showText();
+            console.textField.scrollV = console.textField.maxScrollV;
+        }
+        private function showText():void
+        {
+            console.text = console.textField.text = text;
+        }
+        private function showXML():void
+        {
+            console.text = console.textField.text = xml;
         }
         //======================================================================
         //  Event handlers
@@ -72,6 +91,14 @@ package xfeet.output
         {
             removeEventListener(Event.ADDED_TO_STAGE, addedToStageHandler);
             build();
+        }
+        private function textHandler(event:MouseEvent):void
+        {
+            showText();
+        }
+        private function xmlHandler(event:MouseEvent):void
+        {
+            showXML();
         }
     }
 }
