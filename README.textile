@@ -4,10 +4,149 @@ It's a xUnit 4 style version of "Grant Skinner":http://gskinner.com/blog/ 's "Pe
 
 h2. Thanks
 
-"@gskinner":http://twitter.com/gskinner : "PerformanceTest 2":http://gskinner.com/blog/archives/2010/02/performancetest.html
-"@bit101":http://twitter.com/bit101 : "Minimal Comps":http://www.minimalcomps.com/
+* "@gskinner":http://twitter.com/gskinner - "PerformanceTest 2":http://gskinner.com/blog/archives/2010/02/performancetest.html
+* "@bit101":http://twitter.com/bit101 - "Minimal Comps":http://www.minimalcomps.com/
 
 h2. Demo
 
-"View Demo":http://eidiot.net/projects/xfeet/XfeetDemo.swf
-"View Source":https://github.com/eidiot/xfeet/tree/master/demo
+* "View Demo":http://eidiot.net/projects/xfeet/XfeetDemo.swf
+* "View Source":https://github.com/eidiot/xfeet/tree/master/demo
+
+h2. Examples
+
+h3. Runner
+
+<pre>
+package
+{
+    import xfeet.XfeetCore;
+    import xfeet.output.MinimalOutput;
+    [SWF(width="550", height="400", backgroundColor="0xFFFFFF", frameRate="30")]
+    public class XfeetDemo extends MinimalOutput
+    {
+        public function XfeetDemo()
+        {
+            super();
+            new XfeetCore(this).run(AllTests);
+        }
+    }
+}
+</pre>
+
+You can set loops and iterations here:
+
+<pre>new XfeetCore(this, 1000000, 10).run(AllTests);</pre>
+
+* loops - How many times to run one function to get a time. It's 100000 by default. Set it bigger if your functions run fast.
+* iterations - How many times to run the test and get the time by the average of the iterations. It's 4 by default. Set it bigger if you want to get a more exact value.
+
+*NOTE* You can set them only here and in the [Unit] metadata tag like [Unit(loops=1000000)]. Values in [Unit] will be used if exist. Use values here otherwise.
+
+You can also run a single test unit instead of the "AllTests" suite:
+
+<pre><pre>new XfeetCore(this).run(OneSimpleTest);</pre></pre>
+
+h3. Tests
+
+<pre>
+package tests
+{
+    [Unit(label="Comparing floor & round to bitwise equivalents", loops="1000000")]
+    public class Bitwise
+    {
+        private var foo:Array;
+        private var i:uint;
+
+        [Before]
+        public function setUp():void
+        {
+            foo = [];
+            i = 0;
+        }
+        [Tare]
+        public function tare():void
+        {
+            i++;
+        }
+        [Test(label="Math.round(n), Math.floor(n), Math.floor(n/2)")]
+        public function math():void
+        {
+            var a:uint = Math.floor(i / 7);
+            var b:uint = Math.round(i / 3);
+            var c:uint = Math.floor(i / 2);
+            foo[i] = String(Math.random());
+            i++;
+        }
+        [Test(label="n+0.5|0, n|0, n>>1")]
+        public function bitwise():void
+        {
+            var a:uint = i / 7 | 0;
+            var b:uint = i / 3 + 0.5 | 0;
+            var c:uint = i >> 1;
+            i++;
+        }
+    }
+}
+</pre>
+
+It's xUnit 4 style with metadatas like [Before], [After], [Test].
+
+* [Test] - The *Only* tag you must use. To mark a function as a test method.
+* [Tare] - To mark a method for taring.
+* [Unit] - Use it when you want to set label(description) or loops/iterations.
+* [Before] - Set up test fixture before every test method running.
+* [After] - Tear down function do clean works after every test.
+
+h3. Suite
+
+<pre>
+package tests.casting
+{
+    [Suite]
+    public class CastingSuite
+    {
+        public var casting:Casting;
+        public var castingPromotion:CastingPromotion;
+    }
+}
+</pre>
+
+Or do it like this:
+
+<pre>
+package tests.casting
+{
+    [Suite]
+    public class CastingSuite
+    {
+        public static function suite():Array
+        {
+            return [Casting, CastingPromotion];
+        }
+    }
+}
+</pre>
+
+h3. Others
+
+You can also set loops to 1 for some case:
+
+<pre>
+package tests.collection
+{
+    [Unit(label="Comparing cost of constructing and populating different collection types", loops="1")]
+    public class Collections
+    {
+        private var loops:int = 1000000;
+
+        [Test]
+        public function array():void {
+            var list:Array = [];
+            for (var i:uint=0; i<loops; i++) {
+                list[i] = i/3;
+            }
+        }
+        //...
+    }
+}
+</pre>
