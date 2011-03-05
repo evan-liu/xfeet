@@ -29,8 +29,6 @@ package xfeet.data
             //-- description
             var metadata:ReflectionMetaData = suiteReflection.getMetaDataByName("Suite");
             _description = metadata.getValueFor("label");
-            _loops = metadata.getValueFor("loops");
-            _iterations = metadata.getValueFor("iterations");
             //-- Elements
             var suiteMethod:ReflectionMethod = suiteReflection.getMethodByName("suite");
             if (suiteMethod && suiteMethod.returnType == "Array")
@@ -64,22 +62,6 @@ package xfeet.data
         public function get description():String
         {
             return _description;
-        }
-        //------------------------------
-        //  loops
-        //------------------------------
-        private var _loops:uint;
-        public function get loops():uint
-        {
-            return _loops;
-        }
-        //------------------------------
-        //  iterations
-        //------------------------------
-        private var _iterations:uint;
-        public function get iterations():uint
-        {
-            return _iterations;
         }
         //------------------------------
         //  elements

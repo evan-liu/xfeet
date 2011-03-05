@@ -2,7 +2,6 @@ package xfeet.runners
 {
     import xfeet.data.MethodData;
     import xfeet.data.RunData;
-    import xfeet.utils.runGC;
 
     import flash.events.TimerEvent;
     import flash.utils.getTimer;
@@ -32,7 +31,7 @@ package xfeet.runners
             this.completeHandler = completeHandler;
             iterations = methodData && methodData.iterations > 0 ? methodData.iterations :
                                                                    runData.iterations;
-            loops = methodData && methodData.loops > 0 ? methodData.loops : runData.loops;
+            loops = runData.loops;
             method = methodData ? unit[methodData.name] : function():void {};
             //
             runData.timer.addEventListener(TimerEvent.TIMER, timerHandler);
@@ -62,7 +61,6 @@ package xfeet.runners
                 method();
             }
             total += getTimer() - t;
-            runGC();
             times++;
             runData.timer.reset();
             runData.timer.start();

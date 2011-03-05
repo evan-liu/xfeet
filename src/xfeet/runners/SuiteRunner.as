@@ -21,14 +21,12 @@ package xfeet.runners
         public function run(suiteData:SuiteData, runData:RunData,
                             resultRoot:XML, completeHandler:Function):void
         {
-            trace("[SuiteRunner/run] " + suiteData.name, onComplete);
             this.suiteData = suiteData;
             this.runData = runData;
             this.completeHandler = completeHandler;
-            printStart();
-            runData.fixSub(suiteData.loops, suiteData.iterations, true);
             resultXML = <Suite name={suiteData.name}/>;
             resultRoot.appendChild(resultXML);
+            printStart();
             //
             elements = suiteData.elements;
             checkNext();
@@ -54,18 +52,11 @@ package xfeet.runners
         }
         private function printStart():void
         {
-            runData.output.printText("\n[ " + suiteData.name);
+            runData.output.printText("[ " + suiteData.name);
             if (suiteData.description)
             {
                 runData.output.printText(" . " + suiteData.description, false);
-            }
-            if (suiteData.loops > 0)
-            {
-                runData.output.printText(" . " + suiteData.loops + " loops", false);
-            }
-            if (suiteData.iterations > 0)
-            {
-                runData.output.printText(" . " + suiteData.iterations + " iterations", false);
+                resultXML.@description = suiteData.description;
             }
             runData.output.printText(" ]", false);
         }

@@ -42,7 +42,7 @@ package xfeet.runners
             this.completeHandler = completeHandler;
             iterations = methodData.iterations > 0 ? methodData.iterations :
                                                      runData.iterations;
-            loops = methodData.loops > 0 ? methodData.loops : runData.loops;
+            loops = runData.loops;
             method = unit[methodData.name];
             //
             resultXML = <Method name={methodData.name} />;
@@ -57,18 +57,16 @@ package xfeet.runners
         //======================================================================
         private function printStart():void
         {
-            runData.output.printText("\n    [ " + methodData.name);
+            runData.output.printText("    [ " + methodData.name);
             if (methodData.description)
             {
                 runData.output.printText(" . " + methodData.description, false);
-            }
-            if (methodData.loops > 0)
-            {
-                runData.output.printText(" . " + methodData.loops + " loops", false);
+                resultXML.@description = methodData.description;
             }
             if (methodData.iterations > 0)
             {
                 runData.output.printText(" . " + methodData.iterations + " iterations", false);
+                resultXML.@iterations= methodData.iterations;
             }
             runData.output.printText(" ]", false);
         }

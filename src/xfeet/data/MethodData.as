@@ -18,7 +18,6 @@ package xfeet.data
             _metaData = reflection.getMetaDataByName(metaDataName);
             _order = _metaData.getValueFor("order");
             _iterations = _metaData.getValueFor("iterations");
-            _loops = _metaData.getValueFor("loops");
             _description = _metaData.getValueFor("label");
         }
         //======================================================================
@@ -63,14 +62,6 @@ package xfeet.data
         public function get iterations():uint
         {
             return _iterations;
-        }
-        //------------------------------
-        //  loops
-        //------------------------------
-        private var _loops:uint;
-        public function get loops():uint
-        {
-            return _loops;
         }
         //------------------------------
         //  description

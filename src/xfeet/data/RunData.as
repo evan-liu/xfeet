@@ -20,8 +20,8 @@ package xfeet.data
         //======================================================================
         //  Variables
         //======================================================================
-        private var subLoops:uint = 0;
-        private var subIterations:uint = 0;
+        private var unitLoops:uint = 0;
+        private var unitIterations:uint = 0;
         //======================================================================
         //  Properties
         //======================================================================
@@ -31,7 +31,7 @@ package xfeet.data
         private var _loops:uint;
         public function get loops():uint
         {
-            return subLoops > 0 ? subLoops : _loops;
+            return unitLoops > 0 ? unitLoops : _loops;
         }
         //------------------------------
         //  iterations
@@ -39,7 +39,7 @@ package xfeet.data
         private var _iterations:uint;
         public function get iterations():uint
         {
-            return subIterations > 0 ? subIterations : _iterations;
+            return unitIterations > 0 ? unitIterations : _iterations;
         }
         //------------------------------
         //  output
@@ -68,7 +68,7 @@ package xfeet.data
         //------------------------------
         //  tareTime
         //------------------------------
-        private var _tareTime:uint;
+        private var _tareTime:uint = 0;
         public function get tareTime():uint
         {
             return _tareTime;
@@ -80,16 +80,10 @@ package xfeet.data
         //======================================================================
         //  Public methods
         //======================================================================
-        public function fixSub(loops:uint, iterations:uint, force:Boolean):void
+        public function fixUnit(loops:uint, iterations:uint):void
         {
-            if (force || loops > 0)
-            {
-                subLoops = loops;
-            }
-            if (force || iterations > 0)
-            {
-                subIterations = iterations;
-            }
+            unitLoops = loops;
+            unitIterations = iterations;
         }
     }
 }
