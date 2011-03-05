@@ -1,9 +1,9 @@
 package xfeet.data
 {
     import p2.reflect.Reflection;
+    import p2.reflect.ReflectionMetaData;
     import p2.reflect.ReflectionMethod;
 
-    import xfeet.TestMethod;
 
     public class UnitData
     {
@@ -17,6 +17,13 @@ package xfeet.data
         {
             _unitClass = unitClass;
             _reflection = Reflection.create(unitClass);
+            var metadata:ReflectionMetaData = _reflection.getMetaDataByName("Unit");
+            if (metadata)
+            {
+                _description = metadata.getValueFor("label");
+                _loops = metadata.getValueFor("loops");
+                _iterations = metadata.getValueFor("iterations");
+            }
             _name = reflection.name;
             if (_name.indexOf("::") != -1)
             {
@@ -24,6 +31,7 @@ package xfeet.data
             }
             _beforeMethods = getFixtureMethods(reflection, "Before");
             _afterMethods = getFixtureMethods(reflection, "After");
+            _tareMethod = getFixtureMethods(reflection, "Tare")[0];
             _testMethods = getTestMethods(reflection, "Test");
         }
         //======================================================================
@@ -63,6 +71,30 @@ package xfeet.data
             return _name;
         }
         //------------------------------
+        //  description
+        //------------------------------
+        private var _description:String;
+        public function get description():String
+        {
+            return _description;
+        }
+        //------------------------------
+        //  loops
+        //------------------------------
+        private var _loops:uint;
+        public function get loops():uint
+        {
+            return _loops;
+        }
+        //------------------------------
+        //  iterations
+        //------------------------------
+        private var _iterations:uint;
+        public function get iterations():uint
+        {
+            return _iterations;
+        }
+        //------------------------------
         //  beforeMethods
         //------------------------------
         private var _beforeMethods:Array;
@@ -95,6 +127,14 @@ package xfeet.data
         {
             return _testMethods.concat();
         }
+        //------------------------------
+        //  tareMethod
+        //------------------------------
+        private var _tareMethod:String;
+        public function get tareMethod():String
+        {
+            return _tareMethod;
+        }
         //======================================================================
         //  Private methods
         //======================================================================
@@ -114,7 +154,7 @@ package xfeet.data
             var methods:Array = [];
             for each (var methodReflection:ReflectionMethod in methodReflections)
             {
-                methods.push(new TestMethod(this, methodReflection, metaDataName));
+                methods.push(new MethodData(methodReflection, metaDataName));
             }
             methods.sortOn(["order", "name"], Array.NUMERIC);
             return methods;

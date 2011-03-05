@@ -21,21 +21,16 @@ package xfeet.data
         {
             var suiteReflection:Reflection = Reflection.create(suiteClass);
             //-- Name
-            var metadata:ReflectionMetaData = suiteReflection.getMetaDataByName("Suite");
-            _name = metadata.getValueFor("label");
-            if (!_name)
+            _name = suiteReflection.name;
+            if (_name.indexOf("::") != -1)
             {
-                _name = suiteReflection.name;
-                if (_name.indexOf("::") != -1)
-                {
-                    _name = _name.split("::")[1];
-                }
+                _name = _name.split("::")[1];
             }
             //-- description
-            var desc:String = metadata.getValueFor("description");
-            if (desc) {
-                _description = desc;
-            }
+            var metadata:ReflectionMetaData = suiteReflection.getMetaDataByName("Suite");
+            _description = metadata.getValueFor("label");
+            _loops = metadata.getValueFor("loops");
+            _iterations = metadata.getValueFor("iterations");
             //-- Elements
             var suiteMethod:ReflectionMethod = suiteReflection.getMethodByName("suite");
             if (suiteMethod && suiteMethod.returnType == "Array")
@@ -69,6 +64,22 @@ package xfeet.data
         public function get description():String
         {
             return _description;
+        }
+        //------------------------------
+        //  loops
+        //------------------------------
+        private var _loops:uint;
+        public function get loops():uint
+        {
+            return _loops;
+        }
+        //------------------------------
+        //  iterations
+        //------------------------------
+        private var _iterations:uint;
+        public function get iterations():uint
+        {
+            return _iterations;
         }
         //------------------------------
         //  elements
