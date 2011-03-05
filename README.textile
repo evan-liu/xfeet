@@ -1,3 +1,13 @@
 h2. Xfeet: xUnit 4 style performance test tool.
 
-It's a xUnit 4 style form of "Grant Skinner":http://gskinner.com/blog/ 's "PerformanceTest 2":http://gskinner.com/blog/archives/2010/02/performancetest.html .
+It's a xUnit 4 style version of "Grant Skinner":http://gskinner.com/blog/ 's "PerformanceTest 2":http://gskinner.com/blog/archives/2010/02/performancetest.html.
+
+h2. Thanks
+
+"@gskinner":http://twitter.com/gskinner : "PerformanceTest 2":http://gskinner.com/blog/archives/2010/02/performancetest.html
+"@bit101":http://twitter.com/bit101 : "Minimal Comps":http://www.minimalcomps.com/
+
+h2. Demo
+
+"View Demo":https://github.com/eidiot/xfeet/tree/master/demo/XfeetDemo.swf
+"View Source":https://github.com/eidiot/xfeet/tree/master/demo
