@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<project name="xface" basedir="../" default="compile">
+    <property file="build/build.properties"/>
+    <target name="compile">
+        <exec executable="${compc.exe}" dir="${basedir}">
+            <arg line="-include-sources 'src/xfeet'"/>
+            <arg line="-compiler.library-path+='libs'"/>
+            <arg line="-output 'bin/${project.name.versioned}.swc'"/>
+            <arg line="-keep-as3-metadata+=Suite"/>
+            <arg line="-keep-as3-metadata+=Unit"/>
+            <arg line="-keep-as3-metadata+=Test"/>
+            <arg line="-keep-as3-metadata+=Before"/>
+            <arg line="-keep-as3-metadata+=After"/>
+            <arg line="-keep-as3-metadata+=Tare"/>
+        </exec>
+    </target>
+</project>

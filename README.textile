@@ -9,5 +9,5 @@ h2. Thanks
 
 h2. Demo
 
-"View Demo":https://github.com/eidiot/xfeet/tree/master/demo/XfeetDemo.swf
+"View Demo":http://eidiot.net/projects/xfeet/XfeetDemo.swf
 "View Source":https://github.com/eidiot/xfeet/tree/master/demo
