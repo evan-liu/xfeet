@@ -1,18 +1,21 @@
 package xfeet.data
 {
     import xfeet.output.IXfeetOutput;
+
+    import flash.utils.Timer;
     public class RunData
     {
         //======================================================================
         //  Constructor
         //======================================================================
         public function RunData(output:IXfeetOutput, loops:uint, iterations:uint,
-                                printIteration:Boolean)
+                                printIteration:Boolean, delay:int)
         {
             _output = output;
             _loops = loops;
             _iterations = iterations;
             _printIteration = printIteration;
+            _timer = new Timer(delay, 1);
         }
         //======================================================================
         //  Variables
@@ -53,6 +56,26 @@ package xfeet.data
         public function get printIteration():Boolean
         {
             return _printIteration;
+        }
+        //------------------------------
+        //  timer
+        //------------------------------
+        private var _timer:Timer;
+        public function get timer():Timer
+        {
+            return _timer;
+        }
+        //------------------------------
+        //  tareTime
+        //------------------------------
+        private var _tareTime:uint;
+        public function get tareTime():uint
+        {
+            return _tareTime;
+        }
+        public function set tareTime(value:uint):void
+        {
+            _tareTime = value;
         }
         //======================================================================
         //  Public methods

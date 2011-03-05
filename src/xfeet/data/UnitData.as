@@ -31,7 +31,7 @@ package xfeet.data
             }
             _beforeMethods = getFixtureMethods(reflection, "Before");
             _afterMethods = getFixtureMethods(reflection, "After");
-            _tareMethod = getFixtureMethods(reflection, "Tare")[0];
+            _tareMethod = getMethodData(reflection, "Tare");
             _testMethods = getTestMethods(reflection, "Test");
         }
         //======================================================================
@@ -130,8 +130,8 @@ package xfeet.data
         //------------------------------
         //  tareMethod
         //------------------------------
-        private var _tareMethod:String;
-        public function get tareMethod():String
+        private var _tareMethod:MethodData;
+        public function get tareMethod():MethodData
         {
             return _tareMethod;
         }
@@ -147,6 +147,16 @@ package xfeet.data
                 methods.push(methodReflection.name);
             }
             return methods;
+        }
+        private function getMethodData(reflection:Reflection, metaDataName:String):MethodData
+        {
+            var methodReflections:Array = reflection.getMethodsByMetaData(metaDataName);
+            if (methodReflections.length > 0)
+            {
+                return new MethodData(methodReflections[0], metaDataName);
+            }
+            return null;
+
         }
         private function getTestMethods(reflection:Reflection, metaDataName:String):Array
         {

@@ -32,15 +32,20 @@ package xfeet.runners
             //
             unit = new unitData.unitClass();
             methods = unitData.testMethods;
-            checkNext();
+            //
+            tare();
         }
         //======================================================================
         //  Private methods
         //======================================================================
+        private function tare():void
+        {
+            new TareRunner().run(unit, unitData.tareMethod, runData, onTareComplete);
+        }
         private function printStart():void
         {
             runData.output.printText("\n  [ " + unitData.name);
-            if (unitData.description) 
+            if (unitData.description)
             {
                 runData.output.printText(" . " + unitData.description, false);
             }
@@ -75,11 +80,15 @@ package xfeet.runners
         }
         private function runTest(test:MethodData):void
         {
-            new MethodRunner().run(unit, test, runData, resultXML, onComplete);
+            new MethodRunner().run(unit, test, runData, resultXML, onMethodComplete);
         }
-        private function onComplete():void
+        private function onMethodComplete():void
         {
             tearDownTest();
+            checkNext();
+        }
+        private function onTareComplete():void
+        {
             checkNext();
         }
     }

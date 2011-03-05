@@ -2,10 +2,9 @@ package xfeet.runners
 {
     import xfeet.data.MethodData;
     import xfeet.data.RunData;
+    import xfeet.utils.runGC;
 
     import flash.events.TimerEvent;
-    import flash.net.LocalConnection;
-    import flash.utils.Timer;
     import flash.utils.getTimer;
     public class MethodRunner
     {
@@ -21,7 +20,12 @@ package xfeet.runners
         private var method:Function;
         private var iterations:uint;
         private var loops:uint;
-        private var timer:Timer = new Timer(1, 1);
+        //
+        private var times:uint = 0;
+        //
+        private var min:int = -1;
+        private var max:int = -1;
+        private var total:int = 0;
         //======================================================================
         //  Public methods
         //======================================================================
@@ -41,7 +45,7 @@ package xfeet.runners
             resultRoot.appendChild(resultXML);
             printStart();
             //
-            timer.addEventListener(TimerEvent.TIMER, timerHandler);
+            runData.timer.addEventListener(TimerEvent.TIMER, timerHandler);
             checkIteration();
         }
         //======================================================================
@@ -59,7 +63,10 @@ package xfeet.runners
         }
         private function printComplete():void
         {
-            runData.output.printText("    [ " + methodData.name + " . ]");
+            var time:Number = total / iterations;
+            runData.output.printText("    [ " + methodData.name);
+            runData.output.printText(" . " + time.toFixed(1), false);
+            runData.output.printText(" ]", false);
         }
         private function printInteration(t:uint):void
         {
@@ -67,41 +74,42 @@ package xfeet.runners
         }
         private function checkIteration():void
         {
-            if (iterations > 0)
+            if (times < iterations)
             {
                 runIteration();
             }
             else
             {
+                runData.timer.removeEventListener(TimerEvent.TIMER, timerHandler);
                 printComplete();
-                timer.removeEventListener(TimerEvent.TIMER, timerHandler);
                 completeHandler();
             }
         }
         private function runIteration():void
         {
-            var loops:uint = runData.loops;
             var t:uint = getTimer();
             for (var i:int = 0; i < loops; i++)
             {
                 method();
             }
-            t = getTimer() - t;
+            t = getTimer() - t - runData.tareTime;
+            total += t;
+            if (min == -1 || t < min)
+            {
+                min = t;
+            }
+            if (max == -1 || t > max)
+            {
+                max = t;
+            }
             if (runData.iterations > 1 && runData.printIteration)
             {
                 printInteration(t);
             }
             runGC();
-            iterations--;
-            timer.reset();
-            timer.start();
-        }
-        private static function runGC():void {
-            try
-            {
-                new LocalConnection().connect("_FORCE_GC_");
-                new LocalConnection().connect("_FORCE_GC_");
-            } catch(e:*) {}
+            times++;
+            runData.timer.reset();
+            runData.timer.start();
         }
         //======================================================================
         //  Event handlers
