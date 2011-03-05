@@ -5,6 +5,7 @@ package xfeet.runners
     import xfeet.utils.runGC;
 
     import flash.events.TimerEvent;
+    import flash.system.System;
     import flash.utils.getTimer;
     public class MethodRunner
     {
@@ -25,7 +26,10 @@ package xfeet.runners
         //
         private var min:int = -1;
         private var max:int = -1;
-        private var total:int = 0;
+        private var time:Number = 0;
+        //
+        private var memory:int;
+        private var retainedMemory:int;
         //======================================================================
         //  Public methods
         //======================================================================
@@ -70,7 +74,7 @@ package xfeet.runners
         }
         private function printComplete():void
         {
-            var time:Number = total / iterations;
+            time /= iterations;
             runData.output.printText("    [ " + methodData.name);
             runData.output.printText(" . " + time.toFixed(1), false);
             if (iterations > 1)
@@ -83,11 +87,24 @@ package xfeet.runners
                     runData.output.printText(" . deviation=" + deviation.toFixed(3), false);
                 }
             }
+            if (memory > iterations)
+            {
+                memory /= iterations;
+                retainedMemory /= iterations;
+                runData.output.printText(" . memory=" + memory, false);
+                runData.output.printText(" . retainedMemory=" + retainedMemory, false);
+            }
             runData.output.printText(" ]", false);
         }
-        private function printInteration(t:uint):void
+        private function printInteration(t:uint, memory:int, retainedMemory:int):void
         {
-            runData.output.printText("      [  " + t + " ]");
+            runData.output.printText("      [  " + t);
+            if (memory > 1)
+            {
+                runData.output.printText(" . memory=" + memory, false);
+                runData.output.printText(" . retainedMemory=" + retainedMemory, false);
+            }
+            runData.output.printText(" ]", false);
         }
         private function checkIteration():void
         {
@@ -104,13 +121,15 @@ package xfeet.runners
         }
         private function runIteration():void
         {
+            runGC();
+            var mem:uint = System.totalMemory;
             var t:uint = getTimer();
             for (var i:int = 0; i < loops; i++)
             {
                 method();
             }
             t = getTimer() - t - runData.tareTime;
-            total += t;
+            time += t;
             if (min == -1 || t < min)
             {
                 min = t;
@@ -119,11 +138,15 @@ package xfeet.runners
             {
                 max = t;
             }
+            var thisMemory:int = System.totalMemory - mem >> 10;
+            runGC();
+            var thisRetainedMemory:int = System.totalMemory - mem >> 10;
+            memory += thisMemory;
+            retainedMemory += thisRetainedMemory;
             if (runData.iterations > 1 && runData.printIteration)
             {
-                printInteration(t);
+                printInteration(t, thisMemory, thisRetainedMemory);
             }
-            runGC();
             times++;
             runData.timer.reset();
             runData.timer.start();
