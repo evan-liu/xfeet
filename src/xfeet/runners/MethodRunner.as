@@ -59,6 +59,10 @@ package xfeet.runners
         {
             runData.output.printText("    [ " + methodData.name + " . ]");
         }
+        private function printInteration(t:uint):void
+        {
+            runData.output.printText("      [  " + t + " ms ]");
+        }
         private function checkIteration():void
         {
             if (iterations > 0)
@@ -81,7 +85,10 @@ package xfeet.runners
                 unit[methodData.name]();
             }
             t = getTimer() - t;
-            runData.output.printText("      [  " + t + " ms ]");
+            if (runData.iterations > 0 && runData.printIteration)
+            {
+                printInteration(t);
+            }
             runGC();
             iterations--;
             timer.reset();

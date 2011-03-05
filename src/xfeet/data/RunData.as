@@ -6,11 +6,13 @@ package xfeet.data
         //======================================================================
         //  Constructor
         //======================================================================
-        public function RunData(output:IXfeetOutput, loops:uint, iterations:uint)
+        public function RunData(output:IXfeetOutput, loops:uint, iterations:uint,
+                                printIteration:Boolean)
         {
             _output = output;
             _loops = loops;
             _iterations = iterations;
+            _printIteration = printIteration;
         }
         //======================================================================
         //  Variables
@@ -43,6 +45,14 @@ package xfeet.data
         public function get output():IXfeetOutput
         {
             return _output;
+        }
+        //------------------------------
+        //  printIteration
+        //------------------------------
+        private var _printIteration:Boolean;
+        public function get printIteration():Boolean
+        {
+            return _printIteration;
         }
         //======================================================================
         //  Public methods

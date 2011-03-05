@@ -22,10 +22,11 @@ package xfeet
          * @param loops       The number of times to repeat the test within a single iteration.
          * @param iterations  The number of iterations to run with this test.
          */
-        public function XfeetCore(output:IXfeetOutput, loops:uint = 100000, iterations:uint = 4)
+        public function XfeetCore(output:IXfeetOutput, loops:uint = 100000,
+                                  iterations:uint = 4, printIteration:Boolean = true)
         {
             super();
-            data = new RunData(output, loops, iterations);
+            data = new RunData(output, loops, iterations, printIteration);
         }
         //======================================================================
         //  Variables
