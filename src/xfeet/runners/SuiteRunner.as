@@ -52,7 +52,7 @@ package xfeet.runners
         }
         private function printStart():void
         {
-            runData.output.printText("[ " + suiteData.name);
+            runData.output.printText("\n[ " + suiteData.name);
             if (suiteData.description)
             {
                 runData.output.printText(" . " + suiteData.description, false);

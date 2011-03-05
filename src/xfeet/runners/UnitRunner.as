@@ -44,7 +44,7 @@ package xfeet.runners
         }
         private function printStart():void
         {
-            runData.output.printText("  [ " + unitData.name);
+            runData.output.printText("\n  [ " + unitData.name);
             if (unitData.description)
             {
                 runData.output.printText(" . " + unitData.description, false);

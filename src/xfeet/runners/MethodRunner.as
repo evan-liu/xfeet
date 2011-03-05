@@ -73,7 +73,7 @@ package xfeet.runners
         private function printComplete():void
         {
             time /= iterations;
-            runData.output.printText("    [ " + methodData.name);
+            runData.output.printText("    [ ===== ");
             runData.output.printText(" . " + time.toFixed(1), false);
             resultXML.@time = time.toFixed(1);
             if (iterations > 1)
