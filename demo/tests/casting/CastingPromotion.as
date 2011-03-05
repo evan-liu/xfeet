@@ -1,4 +1,4 @@
-﻿package tests{    [Unit(label="Evaluating impact of casting an array iterator", loops="1000000")]    public class CastingPromotion    {        //======================================================================
+﻿package tests.casting{    [Unit(label="Evaluating impact of casting an array iterator", loops="1000000")]    public class CastingPromotion    {        //======================================================================
         //  Variables
         //======================================================================        private var values:Array;        private var i:int;        //======================================================================
         //  Public methods

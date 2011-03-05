@@ -1,8 +1,8 @@
 package
 {
     import tests.Bitwise;
-    import tests.Casting;
-    import tests.CastingPromotion;
+    import tests.casting.CastingSuite;
+    import tests.collection.Collections;
 
     [Suite]
     public class AllTests
@@ -11,9 +11,9 @@ package
         {
             var tests:Array =
             [
-               Casting,
-               CastingPromotion,
-               Bitwise,
+                Collections,
+                Bitwise,
+                CastingSuite,
             ];
             return tests;
         }
